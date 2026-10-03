@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Chamakuri Rakesh | Aspiring Python developer">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#090b0d">
+    <title>Chamakuri Rakesh | Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+    <main id="home" class="page-section active-section" aria-labelledby="heroName">
+        <button class="owner-login-trigger" id="ownerLoginTrigger" type="button" aria-label="Owner login">
+            <i class="fa-solid fa-lock" aria-hidden="true"></i><span>Owner</span>
+        </button>
+        <div class="home-content">
+            <p class="intro-text">Hello, I'm</p>
+            <h1 class="hero-name" id="heroName">Chamakuri Rakesh</h1>
+            <p class="hero-role">I'm <span id="heroRole">Aspiring Python Developer</span></p>
+            <nav class="main-nav" id="mainNav" aria-label="Portfolio sections">
+                <button class="nav-link active" data-section="home" type="button">Home</button>
+                <button class="nav-link nav-about" data-section="about" type="button">About</button>
+                <button class="nav-link nav-education" data-section="education" type="button">Education</button>
+                <button class="nav-link nav-achievements" data-section="achievements" type="button">Achievements</button>
+                <button class="nav-link nav-projects" data-section="projects" type="button">Projects</button>
+                <button class="nav-link nav-skills" data-section="skills" type="button">Skills</button>
+                <button class="nav-link nav-resume" data-section="resume" type="button">Resume</button>
+                <button class="nav-link nav-contact" data-section="contact" type="button">Contact</button>
+            </nav>
+            <div class="social-links" id="socialLinks" aria-label="Social profiles"></div>
+            <div class="owner-controls" id="ownerControls" hidden>
+                <span class="owner-status"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Owner signed in</span>
+                <button class="owner-action" id="editPortfolioButton" type="button"><i class="fa-solid fa-pen" aria-hidden="true"></i> Edit portfolio</button>
+                <button class="owner-action owner-signout" id="signOutButton" type="button">Sign out</button>
+            </div>
+        </div>
+    </main>
+
+    <section class="content-section" id="about" aria-labelledby="aboutTitle" hidden>
+        <button class="back-home" data-section="home" type="button"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Home</button>
+        <button class="section-owner-action" data-open-editor type="button" hidden><i class="fa-solid fa-pen" aria-hidden="true"></i> Edit portfolio</button>
+        <div class="section-inner"><p class="section-kicker">01 / INTRODUCTION</p><h2 id="aboutTitle">About <span>me</span></h2><div class="section-copy" id="aboutContent"></div></div>
+    </section>
+    <section class="content-section" id="education" aria-labelledby="educationTitle" hidden>
+        <button class="back-home" data-section="home" type="button"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Home</button>
+        <button class="section-owner-action" data-open-editor type="button" hidden><i class="fa-solid fa-pen" aria-hidden="true"></i> Edit portfolio</button>
+        <div class="section-inner"><p class="section-kicker">02 / LEARNING</p><h2 id="educationTitle">My <span>education</span></h2><div class="item-list" id="educationContent"></div></div>
+    </section>
+    <section class="content-section" id="achievements" aria-labelledby="achievementsTitle" hidden>
+        <button class="back-home" data-section="home" type="button"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Home</button>
+        <button class="section-owner-action" data-open-editor type="button" hidden><i class="fa-solid fa-pen" aria-hidden="true"></i> Edit portfolio</button>
+        <div class="section-inner"><p class="section-kicker">03 / MILESTONES</p><h2 id="achievementsTitle">My <span>achievements</span></h2><div class="item-list" id="achievementsContent"></div></div>
+    </section>
+    <section class="content-section" id="projects" aria-labelledby="projectsTitle" hidden>
+        <button class="back-home" data-section="home" type="button"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Home</button>
+        <button class="section-owner-action" data-open-editor type="button" hidden><i class="fa-solid fa-pen" aria-hidden="true"></i> Edit portfolio</button>
+        <div class="section-inner"><p class="section-kicker">04 / THINGS I'VE BUILT</p><h2 id="projectsTitle">Selected <span>projects</span></h2><div class="item-list project-list" id="projectsContent"></div></div>
+    </section>
+    <section class="content-section" id="skills" aria-labelledby="skillsTitle" hidden>
+        <button class="back-home" data-section="home" type="button"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Home</button>
+        <button class="section-owner-action" data-open-editor type="button" hidden><i class="fa-solid fa-pen" aria-hidden="true"></i> Edit portfolio</button>
+        <div class="section-inner"><p class="section-kicker">05 / TOOLKIT</p><h2 id="skillsTitle">My <span>skills</span></h2><div class="skills-list" id="skillsContent"></div></div>
+    </section>
+    <section class="content-section" id="resume" aria-labelledby="resumeTitle" hidden>
+        <button class="back-home" data-section="home" type="button"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Home</button>
+        <button class="section-owner-action" data-open-editor type="button" hidden><i class="fa-solid fa-pen" aria-hidden="true"></i> Edit portfolio</button>
+        <div class="section-inner"><p class="section-kicker">06 / EXPERIENCE</p><h2 id="resumeTitle">My <span>resume</span></h2><p class="resume-description" id="resumeDescription"></p><a class="resume-link" id="resumeLink" href="#" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> View resume</a></div>
+    </section>
+    <section class="content-section" id="contact" aria-labelledby="contactTitle" hidden>
+        <button class="back-home" data-section="home" type="button"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Home</button>
+        <button class="section-owner-action" data-open-editor type="button" hidden><i class="fa-solid fa-pen" aria-hidden="true"></i> Edit portfolio</button>
+        <div class="section-inner"><p class="section-kicker">07 / SAY HELLO</p><h2 id="contactTitle">Get in <span>touch</span></h2><p class="contact-description" id="contactDescription"></p><a class="contact-email" id="contactEmail" href="#"></a></div>
+    </section>
+
+    <footer class="site-footer"><span>© <span id="currentYear">2026</span> Chamakuri Rakesh</span><span>Made with care</span></footer>
+
+    <dialog class="site-dialog" id="loginDialog" aria-labelledby="loginTitle">
+        <form class="dialog-form" id="loginForm">
+            <button class="dialog-close" type="button" data-close-dialog="loginDialog" aria-label="Close">×</button>
+            <p class="section-kicker">PRIVATE AREA</p><h2 id="loginTitle">Owner <span>login</span></h2>
+            <label for="ownerEmail">Email</label><input id="ownerEmail" type="email" autocomplete="username" required>
+            <label for="ownerPassword">Password</label><input id="ownerPassword" type="password" autocomplete="current-password" required>
+            <button class="dialog-submit" type="submit">Sign in</button><p class="dialog-message" id="loginMessage" aria-live="polite"></p>
+            <p class="dialog-hint">Owner account is created privately in Supabase. There is no public sign-up.</p>
+        </form>
+    </dialog>
+
+    <dialog class="site-dialog editor-dialog" id="editorDialog" aria-labelledby="editorTitle">
+        <form class="dialog-form" id="editorForm">
+            <button class="dialog-close" type="button" data-close-dialog="editorDialog" aria-label="Close">×</button>
+            <p class="section-kicker">OWNER ONLY</p><h2 id="editorTitle">Edit <span>portfolio</span></h2>
+            <p class="editor-instructions">Edit the JSON below and save. Keep the property names and JSON punctuation valid.</p>
+            <label for="portfolioJson">Portfolio content (JSON)</label>
+            <textarea id="portfolioJson" spellcheck="false" required></textarea>
+            <button class="dialog-submit" type="submit">Save changes</button><p class="dialog-message" id="editorMessage" aria-live="polite"></p>
+        </form>
+    </dialog>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js?v=3"></script>
+</body>
+</html>
