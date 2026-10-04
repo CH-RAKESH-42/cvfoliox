@@ -153,13 +153,13 @@ textarea:focus-visible {
     color: var(--green);
 }
 
-.nav-about:hover { color: #78c8ff; }
-.nav-education:hover { color: #f4c46b; }
-.nav-achievements:hover { color: #ff8a8a; }
-.nav-projects:hover { color: #bd9aff; }
-.nav-skills:hover { color: #79dfcf; }
-.nav-resume:hover { color: #ffa96b; }
-.nav-contact:hover { color: #f28bd4; }
+.nav-about:hover, .nav-about.active { color: #78c8ff; }
+.nav-education:hover, .nav-education.active { color: #f4c46b; }
+.nav-achievements:hover, .nav-achievements.active { color: #ff8a8a; }
+.nav-projects:hover, .nav-projects.active { color: #bd9aff; }
+.nav-skills:hover, .nav-skills.active { color: #79dfcf; }
+.nav-resume:hover, .nav-resume.active { color: #ffa96b; }
+.nav-contact:hover, .nav-contact.active { color: #f28bd4; }
 
 .social-links {
     display: flex;
@@ -184,6 +184,7 @@ textarea:focus-visible {
     color: #778189;
     border-style: dashed;
     cursor: default;
+    pointer-events: none;
 }
 
 .social-link:hover {
@@ -468,6 +469,12 @@ textarea:focus-visible {
     tab-size: 2;
 }
 
+.social-url-fields {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0 12px;
+}
+
 .editor-instructions,
 .dialog-hint {
     margin: 0 0 8px;
@@ -520,6 +527,7 @@ textarea:focus-visible {
     .hero-name { font-size: 2.35rem; }
     .hero-role { font-size: 1.08rem; }
     .nav-link { font-size: 0.84rem; }
+    .social-url-fields { grid-template-columns: 1fr; }
     .dialog-form { padding: 29px 22px; }
     .site-footer { flex-direction: column; }
 }

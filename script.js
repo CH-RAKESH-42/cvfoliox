@@ -61,15 +61,22 @@ const defaultContent = {
         email: "rakesh.dev@example.com"
     },
     socials: {
-        github: "https://github.com/",
-        linkedin: "https://www.linkedin.com/",
-        instagram: "https://www.instagram.com/"
+        github: "",
+        linkedin: "",
+        instagram: ""
+    },
+    socialLinksEnabled: {
+        github: false,
+        linkedin: false,
+        instagram: false
     }
 };
 
 let portfolio = structuredClone(defaultContent);
 let activeSection = "home";
 const LOCAL_PORTFOLIO_KEY = "portfolio_local_content";
+const isLocalDevelopment = ["localhost", "127.0.0.1", "[::1]"].includes(window.location.hostname);
+const ownerLoginRoute = isLocalDevelopment || new URLSearchParams(window.location.search).get("owner") === "login";
 
 const $ = (selector) => document.querySelector(selector);
 const sections = [...document.querySelectorAll(".page-section, .content-section")];
@@ -106,19 +113,23 @@ function safeExternalUrl(value) {
 }
 
 function resolveSocialUrl(key, value) {
-    const fallbackMap = {
-        github: "https://github.com/",
-        linkedin: "https://www.linkedin.com/",
-        instagram: "https://www.instagram.com/"
+    if (typeof value !== "string" || !value.trim()) return "";
+
+    const safeUrl = safeExternalUrl(value.trim());
+    if (!safeUrl || safeUrl.includes("your-username")) return "";
+
+    const allowedDomains = {
+        github: "github.com",
+        linkedin: "linkedin.com",
+        instagram: "instagram.com"
     };
-    const fallback = fallbackMap[key] || "";
+    const domain = allowedDomains[key];
+    if (!domain) return "";
 
-    if (typeof value !== "string" || !value.trim()) return fallback;
-
-    const trimmed = value.trim();
-    if (trimmed.includes("your-username")) return fallback;
-
-    return safeExternalUrl(trimmed) || fallback;
+    const url = new URL(safeUrl);
+    const isExpectedDomain = url.hostname === domain || url.hostname.endsWith(`.${domain}`);
+    const hasProfilePath = url.pathname.split("/").filter(Boolean).length > 0;
+    return isExpectedDomain && hasProfilePath ? url.href : "";
 }
 
 function showSection(sectionId, updateHistory = true) {
@@ -155,15 +166,17 @@ function renderSocials() {
         ["instagram", "Instagram", "fa-brands fa-instagram"]
     ];
     accounts.forEach(([key, label, icon]) => {
-        const url = resolveSocialUrl(key, portfolio.socials?.[key]);
+        const url = portfolio.socialLinksEnabled?.[key]
+            ? resolveSocialUrl(key, portfolio.socials?.[key])
+            : "";
         const link = document.createElement("a");
         link.className = "social-link";
         const isPlaceholder = !url || url.includes("your-username");
         if (isPlaceholder) {
             link.classList.add("is-placeholder");
-            link.href = "#";
+            link.setAttribute("aria-disabled", "true");
+            link.tabIndex = -1;
             link.title = `Add your ${label} URL in the owner editor`;
-            link.addEventListener("click", (event) => event.preventDefault());
         } else {
             link.href = url;
             link.target = "_blank";
@@ -240,10 +253,21 @@ function setMessage(element, text, isError = false) {
 
 function setOwnerMode(isOwner) {
     $("#ownerControls").hidden = !isOwner;
-    $("#ownerLoginTrigger").hidden = isOwner;
+    $("#ownerLoginTrigger").hidden = isOwner || !ownerLoginRoute;
     document.querySelectorAll("[data-open-editor]").forEach((button) => {
         button.hidden = !isOwner;
     });
+}
+
+function openPortfolioEditor() {
+    const editableContent = structuredClone(portfolio);
+    delete editableContent.socialLinksEnabled;
+    $("#portfolioJson").value = JSON.stringify(editableContent, null, 2);
+    $("#githubUrl").value = portfolio.socials?.github || "";
+    $("#linkedinUrl").value = portfolio.socials?.linkedin || "";
+    $("#instagramUrl").value = portfolio.socials?.instagram || "";
+    setMessage($("#editorMessage"), "");
+    editorDialog.showModal();
 }
 
 async function loadPortfolio() {
@@ -352,11 +376,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     document.querySelectorAll("#editPortfolioButton, [data-open-editor]").forEach((button) => {
-        button.addEventListener("click", () => {
-        $("#portfolioJson").value = JSON.stringify(portfolio, null, 2);
-        setMessage($("#editorMessage"), "");
-        editorDialog.showModal();
-        });
+        button.addEventListener("click", openPortfolioEditor);
     });
 
     $("#editorForm").addEventListener("submit", async (event) => {
@@ -369,6 +389,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             setMessage(message, error.message || "Please check the JSON syntax.", true);
             return;
         }
+        updatedContent.socials = {
+            ...updatedContent.socials,
+            github: $("#githubUrl").value.trim(),
+            linkedin: $("#linkedinUrl").value.trim(),
+            instagram: $("#instagramUrl").value.trim()
+        };
+        updatedContent.socialLinksEnabled = Object.fromEntries(
+            ["github", "linkedin", "instagram"].map((key) => [
+                key,
+                Boolean(resolveSocialUrl(key, updatedContent.socials?.[key]))
+            ])
+        );
         if (!supabaseClient) {
             saveLocalPortfolio(updatedContent);
             portfolio = updatedContent;
