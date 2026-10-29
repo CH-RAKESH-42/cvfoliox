@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=4">
+    <link rel="stylesheet" href="style.css?v=5">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
@@ -85,8 +85,26 @@
             <p class="section-kicker">PRIVATE AREA</p><h2 id="loginTitle">Owner <span>login</span></h2>
             <label for="ownerEmail">Email</label><input id="ownerEmail" type="email" autocomplete="username" required>
             <label for="ownerPassword">Password</label><input id="ownerPassword" type="password" autocomplete="current-password" required>
-            <button class="dialog-submit" type="submit">Sign in</button><p class="dialog-message" id="loginMessage" aria-live="polite"></p>
+            <div class="login-actions">
+                <button class="dialog-submit" type="submit">Sign in</button>
+                <button class="dialog-link-button" id="resetPasswordButton" type="button">Forgot password?</button>
+            </div>
+            <p class="dialog-message" id="loginMessage" aria-live="polite"></p>
             <p class="dialog-hint">Owner account is created privately in Supabase. There is no public sign-up.</p>
+        </form>
+    </dialog>
+
+    <dialog class="site-dialog" id="passwordResetDialog" aria-labelledby="passwordResetTitle">
+        <form class="dialog-form" id="passwordResetForm">
+            <button class="dialog-close" type="button" data-close-dialog="passwordResetDialog" aria-label="Close">×</button>
+            <p class="section-kicker">ACCOUNT RECOVERY</p>
+            <h2 id="passwordResetTitle">Set <span>new password</span></h2>
+            <label for="newOwnerPassword">New password</label>
+            <input id="newOwnerPassword" type="password" autocomplete="new-password" minlength="8" required>
+            <label for="confirmOwnerPassword">Confirm password</label>
+            <input id="confirmOwnerPassword" type="password" autocomplete="new-password" minlength="8" required>
+            <button class="dialog-submit" type="submit">Update password</button>
+            <p class="dialog-message" id="passwordResetMessage" aria-live="polite"></p>
         </form>
     </dialog>
 
@@ -107,6 +125,6 @@
     </dialog>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="script.js?v=9"></script>
+    <script src="script.js?v=11"></script>
 </body>
 </html>

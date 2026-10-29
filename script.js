@@ -82,6 +82,7 @@ const $ = (selector) => document.querySelector(selector);
 const sections = [...document.querySelectorAll(".page-section, .content-section")];
 const navLinks = [...document.querySelectorAll(".nav-link")];
 const loginDialog = $("#loginDialog");
+const passwordResetDialog = $("#passwordResetDialog");
 const editorDialog = $("#editorDialog");
 
 function loadLocalPortfolio() {
@@ -340,10 +341,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.querySelectorAll("[data-close-dialog]").forEach((button) => {
         button.addEventListener("click", () => document.getElementById(button.dataset.closeDialog).close());
     });
-    [loginDialog, editorDialog].forEach((dialog) => {
+    [loginDialog, passwordResetDialog, editorDialog].forEach((dialog) => {
         dialog.addEventListener("click", (event) => {
             if (event.target === dialog) dialog.close();
         });
+    });
+
+    supabaseClient?.auth.onAuthStateChange((event) => {
+        if (event === "PASSWORD_RECOVERY") {
+            setMessage($("#passwordResetMessage"), "Enter and confirm your new password.");
+            passwordResetDialog.showModal();
+        }
     });
 
     $("#ownerLoginTrigger").addEventListener("click", () => {
@@ -373,6 +381,60 @@ document.addEventListener("DOMContentLoaded", async () => {
         event.currentTarget.reset();
         loginDialog.close();
         await loadPortfolio();
+    });
+
+    $("#resetPasswordButton").addEventListener("click", async () => {
+        const email = $("#ownerEmail").value.trim();
+        if (!email) {
+            setMessage($("#loginMessage"), "Enter your owner email first.", true);
+            $("#ownerEmail").focus();
+            return;
+        }
+        if (!supabaseClient) {
+            setMessage($("#loginMessage"), "Supabase is not configured.", true);
+            return;
+        }
+
+        const resetUrl = new URL(window.location.href);
+        resetUrl.search = "";
+        resetUrl.hash = "";
+        resetUrl.searchParams.set("owner", "login");
+
+        const button = $("#resetPasswordButton");
+        button.disabled = true;
+        setMessage($("#loginMessage"), "Sending password reset email…");
+        const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+            redirectTo: resetUrl.href
+        });
+        button.disabled = false;
+
+        if (error) {
+            setMessage($("#loginMessage"), `Reset failed: ${error.message}`, true);
+            return;
+        }
+        setMessage($("#loginMessage"), "Password reset email sent. Open the link in that email to choose a new password.");
+    });
+
+    $("#passwordResetForm").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const password = $("#newOwnerPassword").value;
+        const confirmation = $("#confirmOwnerPassword").value;
+        if (password !== confirmation) {
+            setMessage($("#passwordResetMessage"), "Passwords do not match.", true);
+            return;
+        }
+        const submit = event.currentTarget.querySelector("[type=submit]");
+        submit.disabled = true;
+        setMessage($("#passwordResetMessage"), "Updating password…");
+        const { error } = await supabaseClient.auth.updateUser({ password });
+        submit.disabled = false;
+        if (error) {
+            setMessage($("#passwordResetMessage"), `Password update failed: ${error.message}`, true);
+            return;
+        }
+        event.currentTarget.reset();
+        setMessage($("#passwordResetMessage"), "Password updated. You can sign in with the new password.");
+        passwordResetDialog.close();
     });
 
     document.querySelectorAll("#editPortfolioButton, [data-open-editor]").forEach((button) => {

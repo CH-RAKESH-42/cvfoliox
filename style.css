@@ -482,9 +482,16 @@ textarea:focus-visible {
     font-size: 0.84rem;
 }
 
+.login-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    margin-top: 18px;
+}
+
 .dialog-submit {
     align-self: flex-start;
-    margin-top: 18px;
     padding: 10px 17px;
     border: 0;
     border-radius: 4px;
@@ -494,7 +501,16 @@ textarea:focus-visible {
     cursor: pointer;
 }
 
-.dialog-submit:disabled { opacity: 0.65; cursor: wait; }
+.dialog-link-button {
+    border: 0;
+    background: transparent;
+    color: #b7c1c6;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.dialog-submit:disabled,
+.dialog-link-button:disabled { opacity: 0.65; cursor: wait; }
 .dialog-message { min-height: 24px; margin: 12px 0 0; color: var(--green); font-size: 0.88rem; }
 .dialog-message.error { color: #ff9292; }
 .dialog-hint { margin-top: 3px; }
